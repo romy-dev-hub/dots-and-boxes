@@ -1,17 +1,22 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <stdbool.h>
+typedef enum {
+    MODE_PVP,
+    MODE_PVM,
+    MODE_MVM,
+    MODE_SOLO,
+} GameMode;
 
+typedef enum {
+    STATE_MENU,
+    STATE_PLAYING,
+    STATE_GAME_OVER,
+} GameState;
 
-#define WINDOW_W 800
-#define WINDOW_H 600
-
-
-void Game_Init(void);
-void Game_Update(void);
-void Game_Draw(void);
-void Game_Close(void);
+void InitGame(GameMode mode);
+void UpdateGame(void);
+void DrawGame(void);
 
 
 #endif // GAME_H
