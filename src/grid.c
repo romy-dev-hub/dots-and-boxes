@@ -9,7 +9,7 @@ void Grid_Init(Grid *g, int rows, int cols){
     g->owners = malloc(rows * cols * sizeof(int));
     
     for (int i = 0; i < rows * cols; i++){
-        g->owners = -1; // no owner yet
+        g->owners[i] = -1; // no owner yet
     }
 }
 
@@ -73,7 +73,7 @@ int Grid_claimed_box(Grid *g, int r, int c){
     int v_left = Grid_index_v(g, r, c);
     int v_right = Grid_index_v(g, r, c + 1);
 
-    if (g->h_edges[h_bot] && g->h_edges[h_bot] && g->v_edges[v_left] && g->v_edges[v_right]){
+    if (g->h_edges[h_top] && g->h_edges[h_bot] && g->v_edges[v_left] && g->v_edges[v_right]){
         return 1;  //box is completed
     }
     
