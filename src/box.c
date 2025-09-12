@@ -1,5 +1,5 @@
-// box.c
 #include "box.h"
+#include <stdbool.h>
 
 bool Box_IsComplete(const Grid *g, int row, int col) {
     if (row < 0 || row >= g->rows || col < 0 || col >= g->cols) return false;
@@ -17,7 +17,6 @@ void Box_Claim(Grid *g, int row, int col, int player_id) {
 
 int Box_CheckAndClaimAfterHorizontal(Grid *g, int edge_r, int edge_c, int player_id) {
     int claimed = 0;
-    // Check box above (if exists)
     if (edge_r > 0) {
         int box_r = edge_r - 1;
         int box_c = edge_c;
@@ -26,7 +25,6 @@ int Box_CheckAndClaimAfterHorizontal(Grid *g, int edge_r, int edge_c, int player
             claimed++;
         }
     }
-    // Check box below (if exists)
     if (edge_r < g->rows) {
         int box_r = edge_r;
         int box_c = edge_c;
@@ -40,7 +38,6 @@ int Box_CheckAndClaimAfterHorizontal(Grid *g, int edge_r, int edge_c, int player
 
 int Box_CheckAndClaimAfterVertical(Grid *g, int edge_r, int edge_c, int player_id) {
     int claimed = 0;
-    // Check box left (if exists)
     if (edge_c > 0) {
         int box_r = edge_r;
         int box_c = edge_c - 1;
@@ -49,7 +46,6 @@ int Box_CheckAndClaimAfterVertical(Grid *g, int edge_r, int edge_c, int player_i
             claimed++;
         }
     }
-    // Check box right (if exists)
     if (edge_c < g->cols) {
         int box_r = edge_r;
         int box_c = edge_c;
