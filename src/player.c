@@ -1,5 +1,6 @@
 #include "player.h"
-#include "game.h"  // Now we can include game.h after the forward declaration
+#include "game.h"
+#include "grid.h"  // Include grid.h to get the full Grid definition
 #include <stdbool.h>
 
 void Players_Init(Game *game) {

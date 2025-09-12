@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include "ai.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 Game game;
 
@@ -39,8 +40,44 @@ void UpdateGame(void) {
         // Handle player input
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             Vector2 mousePos = GetMousePosition();
+            
             // Convert mouse position to grid coordinates
-            // Implement grid interaction logic here
+            int grid_x = (mousePos.x - game.offset_x) / game.cell_size;
+            int grid_y = (mousePos.y - game.offset_y) / game.cell_size;
+            float rel_x = (mousePos.x - game.offset_x) - grid_x * game.cell_size;
+            float rel_y = (mousePos.y - game.offset_y) - grid_y * game.cell_size;
+            
+            // Determine if click is closer to horizontal or vertical edge
+            bool is_horizontal = rel_y < rel_x;
+            if (rel_y > game.cell_size - rel_x) {
+                is_horizontal = rel_y > rel_x;
+            }
+            
+            int claimed = 0;
+            if (is_horizontal) {
+                // Click is on a horizontal edge
+                if (grid_y >= 0 && grid_y <= game.grid.rows && 
+                    grid_x >= 0 && grid_x < game.grid.cols) {
+                    if (Grid_set_horizontal(&game.grid, grid_y, grid_x)) {
+                        claimed = Box_CheckAndClaimAfterHorizontal(&game.grid, grid_y, grid_x, game.current_player);
+                        game.scores[game.current_player] += claimed;
+                    }
+                }
+            } else {
+                // Click is on a vertical edge
+                if (grid_y >= 0 && grid_y < game.grid.rows && 
+                    grid_x >= 0 && grid_x <= game.grid.cols) {
+                    if (Grid_set_vertical(&game.grid, grid_y, grid_x)) {
+                        claimed = Box_CheckAndClaimAfterVertical(&game.grid, grid_y, grid_x, game.current_player);
+                        game.scores[game.current_player] += claimed;
+                    }
+                }
+            }
+            
+            // Switch player if no boxes were claimed
+            if (Player_ShouldSwitch(claimed)) {
+                Player_Switch(&game);
+            }
         }
     }
 }
@@ -111,13 +148,26 @@ void DrawGame(void) {
     DrawText(TextFormat("Player 1: %d", game.scores[0]), 10, 10, 20, RED);
     DrawText(TextFormat("Player 2: %d", game.scores[1]), 10, 40, 20, BLUE);
     
+    // Draw current player indicator
+    if (game.state == STATE_PLAYING) {
+        const char *player_text = TextFormat("Current Player: %d", game.current_player + 1);
+        DrawText(player_text, 10, 70, 20, game.players[game.current_player].color);
+    }
+    
     if (game.state == STATE_GAME_OVER) {
         int winner = Game_GetWinner(game.scores);
+        DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(RAYWHITE, 0.8f));
         if (winner == -1) {
-            DrawText("Game Over: It's a tie!", 250, 10, 30, BLACK);
+            DrawText("Game Over: It's a tie!", 250, 250, 30, BLACK);
         } else {
-            DrawText(TextFormat("Game Over: Player %d wins!", winner + 1), 250, 10, 30, 
+            DrawText(TextFormat("Game Over: Player %d wins!", winner + 1), 250, 250, 30, 
                     game.players[winner].color);
+        }
+        DrawText("Press R to restart", 280, 300, 20, DARKGRAY);
+        
+        // Check for restart
+        if (IsKeyPressed(KEY_R)) {
+            ResetGrid();
         }
     }
     
