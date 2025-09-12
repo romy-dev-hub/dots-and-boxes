@@ -1,5 +1,5 @@
 #include "player.h"
-#include "game.h"
+#include "game.h"  // Now we can include game.h after the forward declaration
 #include <stdbool.h>
 
 void Players_Init(Game *game) {

@@ -17,7 +17,8 @@ typedef enum {
     STATE_GAME_OVER,
 } GameState;
 
-typedef struct {
+// Full definition of Game struct
+typedef struct Game {
     GameMode mode;
     GameState state;
     Grid grid;
