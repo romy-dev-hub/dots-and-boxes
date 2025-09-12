@@ -67,28 +67,3 @@ these funtions are used when a player clicks on an edge:
    if it's free -> mark it as drawn (true) and return true
 */
 
-int Grid_claimed_box(Grid *g, int r, int c){
-    int h_top = Grid_index_h(g, r, c);
-    int h_bot =  Grid_index_h(g, r + 1, c);
-    int v_left = Grid_index_v(g, r, c);
-    int v_right = Grid_index_v(g, r, c + 1);
-
-    if (g->h_edges[h_top] && g->h_edges[h_bot] && g->v_edges[v_left] && g->v_edges[v_right]){
-        return 1;  //box is completed
-    }
-    
-    return 0;
-}
-
-/*
-to check if a box (r, c) is claimed:
-
-   we look at 4 edges:
-      top horizontal 
-      bottom horizontal 
-      left vertical
-      right vertical
-   if all 4 are true -> that box is complete -> return 1
-   otherwise -> return 0
-
-*/

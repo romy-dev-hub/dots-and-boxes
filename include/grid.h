@@ -19,6 +19,5 @@ int Grid_index_h(Grid *g, int r, int c);
 int Grid_index_v(Grid *g, int r, int c);
 bool Grid_set_horizontal(Grid *g, int r, int c);
 bool Grid_set_vertical(Grid *g, int r, int c);
-int Grid_claimed_box(Grid *g, int r, int c);
 
 #endif // GRID_H

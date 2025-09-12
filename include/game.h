@@ -2,6 +2,7 @@
 #define GAME_H
 #include "grid.h"
 #include <stdbool.h>
+#include "player.h"
 
 typedef enum {
     MODE_PVP,
@@ -25,6 +26,7 @@ typedef struct {
     bool extra_turn;     // If true, current_player plays again after claiming
     int cell_size;       // Pixels per cell, for drawing
     int offset_x, offset_y;  // Grid position on screen
+    Player players[2];   // Two players
 } Game;
 
 extern Game game;  // Global for simplicity
